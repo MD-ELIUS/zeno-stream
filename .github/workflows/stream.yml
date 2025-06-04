@@ -2,8 +2,7 @@ name: Stream to ZenoFM
 
 on:
   schedule:
-    - cron: '55 8 * * *'  # বাংলাদেশ সময়: ১৪:৫৫
-  workflow_dispatch:
+    - cron: '15 9 * * *' # Runs daily at 15:15 BST (Bangladesh Time)
 
 jobs:
   stream:
@@ -18,3 +17,6 @@ jobs:
         ffmpeg -re -i "https://ia800405.us.archive.org/3/items/MuftiAbdurRahmanSahabBayanInMasturath/Mufti%20Abdur%20Rahman%20Sahab%20Bayan%20in%20masturath.mp3" \
         -vn -c:a libmp3lame -b:a 128k -content_type audio/mpeg -legacy_icecast 1 \
         -f mp3 "icecast://source:rfdjjQJh@link.zeno.fm:80/ghcsb5a7ma0uv"
+        -metadata title="আজকের বয়ান" \
+        -metadata artist="মুফতি তাকি উসমানি" \
+        -metadata album="তাফসির মাহফিল" \
