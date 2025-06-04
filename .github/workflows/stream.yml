@@ -1,0 +1,20 @@
+name: Stream to ZenoFM
+
+on:
+  schedule:
+    - cron: '5 7 * * *'  # দুপুর ১:০৫ (বাংলাদেশ সময় = UTC +6, cron uses UTC)
+  workflow_dispatch:      # ম্যানুয়ালি ট্রিগারও করতে পারবেন
+
+jobs:
+  stream:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Give Permission to Script
+        run: chmod +x stream.sh
+
+      - name: Run the Stream Script
+        run: ./stream.sh
