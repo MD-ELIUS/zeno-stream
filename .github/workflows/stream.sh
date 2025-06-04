@@ -1,4 +1,5 @@
 #!/bin/bash
-echo "🔴 Starting stream..."
-# উদাহরণ: Zeno.fm এ ffmpeg দিয়ে stream (আপনার stream URL এখানে বসান)
-ffmpeg -re -i "https://your-audio-source-url.mp3" -vn -c:a libmp3lame -f mp3 "icecast://your-zeno-fm-mount-url"
+
+ffmpeg -re -i "https://drive.google.com/uc?export=download&id=1zCmMJVxvtA-eFFUq7s7FfADppSMAhQXw" \
+  -vn -c:a libmp3lame -b:a 128k -f mp3 \
+  icecast://source:rfdjjQJh@link.zeno.fm:80/ghcsb5a7ma0uv
