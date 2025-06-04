@@ -1,6 +1,8 @@
 name: Stream to ZenoFM
 
 on:
+  schedule:
+    - cron: '15 8 * * *'  # প্রতি দিন বাংলাদেশ সময় দুপুর ২:১৫ (UTC 08:15)
   workflow_dispatch:
 
 jobs:
