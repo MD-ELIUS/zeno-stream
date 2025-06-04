@@ -1,20 +1,18 @@
 name: Stream to ZenoFM
 
 on:
-  schedule:
-    - cron: '5 7 * * *'  # দুপুর ১:০৫ (বাংলাদেশ সময় = UTC +6, cron uses UTC)
-  workflow_dispatch:      # ম্যানুয়ালি ট্রিগারও করতে পারবেন
+  workflow_dispatch:
 
 jobs:
   stream:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+    - name: Install FFmpeg
+      run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
-      - name: Give Permission to Script
-        run: chmod +x stream.sh
-
-      - name: Run the Stream Script
-        run: ./stream.sh
+    - name: Start Streaming Directly
+      run: |
+        ffmpeg -re -i "https://ia800405.us.archive.org/3/items/MuftiAbdurRahmanSahabBayanInMasturath/Mufti%20Abdur%20Rahman%20Sahab%20Bayan%20in%20masturath.mp3" \
+        -vn -c:a libmp3lame -b:a 128k -content_type audio/mpeg -legacy_icecast 1 \
+        -f mp3 "icecast://source:rfdjjQJh@link.zeno.fm:80/ghcsb5a7ma0uv"
