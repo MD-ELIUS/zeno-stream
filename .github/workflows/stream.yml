@@ -7,6 +7,7 @@ on:
 jobs:
   stream:
     runs-on: ubuntu-latest
+    timeout-minutes: 75  # যদি অডিও ৩০ মিনিটের হয়, ৪৫ মিনিট রাখুন
 
     steps:
     - name: Install FFmpeg
