@@ -1,30 +1,29 @@
-name: Stream to ZenoFM
+name: Stream to ZenoFM at 1:50 AM BDT
 
 on:
   schedule:
-    - cron: '15 18 * * *' # Runs daily at 12:15 AM BDT (which is 18:15 UTC)
+    # 1:50 AM BDT = 19:50 UTC
+    - cron: '50 19 * * *'
   workflow_dispatch:
 
 jobs:
   stream:
     runs-on: ubuntu-latest
-    timeout-minutes: 25  # 20 min stream + 5 min buffer
-
     steps:
-    - name: Install FFmpeg
-      run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Install FFmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
-    - name: Stream First 20 Minutes Only
-      run: |
-        ffmpeg -re \
-        -i "https://ia800405.us.archive.org/3/items/MuftiAbdurRahmanSahabBayanInMasturath/Mufti%20Abdur%20Rahman%20Sahab%20Bayan%20in%20masturath.mp3" \
-        -t 00:20:00 \
-        -vn \
-        -c:a libmp3lame \
-        -b:a 128k \
-        -content_type audio/mpeg \
-        -legacy_icecast 1 \
-        -metadata title="আজকের বয়ান" \
-        -metadata artist="মুফতি তাকি উসমানি" \
-        -metadata album="তাফসির মাহফিল" \
-        -f mp3 "icecast://source:rfdjjQJh@link.zeno.fm:80/ghcsb5a7ma0uv"
+      - name: Start streaming to ZenoFM
+        run: |
+          ffmpeg -re \
+          -i "https://archive.org/download/MuftiAbdurRahmanSahabBayanInMasturath/Mufti%20Abdur%20Rahman%20Sahab%20Bayan%20in%20masturath.mp3" \
+          -t 00:20:00 \
+          -vn \
+          -c:a libmp3lame \
+          -b:a 128k \
+          -content_type audio/mpeg \
+          -legacy_icecast 1 \
+          -ice_name "আজকের বয়ান" \
+          -ice_description "মুফতি তাকি উসমানি, তাফসির মাহফিল" \
+          -ice_genre "Islamic" \
+          -f mp3 "icecast://source:${{ secrets.ZENO_PASSWORD }}@link.zeno.fm:80/ghcsb5a7ma0uv"
