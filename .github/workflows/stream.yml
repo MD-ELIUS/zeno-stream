@@ -2,19 +2,21 @@ name: Stream Audio to ZenoFM
 
 on:
   schedule:
-    - cron: '10 21 * * *' # UTC time = 3:10 AM BD time
-  workflow_dispatch: # allows manual run from GitHub Actions UI
+    - cron: '5 22 * * *'  # 4:05 AM BDT (UTC+6)
+  workflow_dispatch:
 
 jobs:
   stream:
     runs-on: ubuntu-latest
+    env:
+      ZENO_PASSWORD: ${{ secrets.ZENO_PASSWORD }}
     steps:
       - name: Install FFmpeg
         run: sudo apt update && sudo apt install ffmpeg -y
 
       - name: Start Streaming Audio to ZenoFM
         run: |
-          ffmpeg -re \
+          ffmpeg -loglevel info -re \
           -i "https://archive.org/download/MuftiAbdurRahmanSahabBayanInMasturath/Mufti%20Abdur%20Rahman%20Sahab%20Bayan%20in%20masturath.mp3" \
           -t 00:20:00 \
           -vn \
@@ -26,4 +28,4 @@ jobs:
           -ice_description "মুফতি তাকি উসমানি, তাফসির মাহফিল" \
           -ice_genre "Islamic" \
           -f mp3 \
-          "icecast://source:rfdjjQJh@link.zeno.fm:80/ghcsb5a7ma0uv"
+          "icecast://source:${ZENO_PASSWORD}@link.zeno.fm:80/ghcsb5a7ma0uv"
